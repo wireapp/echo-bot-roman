@@ -9,7 +9,6 @@ verify_ssl = true
 flask = "*"
 flask-restx = "*"
 requests = "*"
-importing = "*"
 
 [requires]
 python_version = "3.7"
