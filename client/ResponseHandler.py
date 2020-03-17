@@ -44,7 +44,7 @@ class ResponseHandler:
 
         new_text = self.__prefix + text
         for mention in mentions:
-            mention['offset'] = mention['offset'] + self.__prefix_offset
+            mention['offset'] += self.__prefix_offset
 
         self.__send_text(new_text, mentions, json['token'])
 
