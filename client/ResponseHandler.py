@@ -39,10 +39,8 @@ class ResponseHandler:
             print(f'Unsupported payload.')
             return
 
-        payload = json['text']
-
-        text = payload['data']
-        mentions = payload['mentions']
+        text = json['text']
+        mentions = json['mentions']
 
         new_text = self.__prefix + text
         for mention in mentions:
@@ -52,5 +50,5 @@ class ResponseHandler:
 
     def __send_text(self, message: str, mentions: list, token: str):
         text = {'data': message, 'mentions': mentions}  # TODO add support for more types than just text
-        msg = {'type': 'create', 'text': text}
+        msg = {'type': 'text', 'text': text}
         self.client.send_message(token, msg)

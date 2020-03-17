@@ -6,6 +6,7 @@ from client.ResponseHandler import ResponseHandler
 roman_api = Blueprint('roman_api', __name__)
 
 
+@roman_api.route('/', methods=['POST'])
 @roman_api.route('/messages', methods=['POST'])
 def messages_api():
     config = get_configuration()
