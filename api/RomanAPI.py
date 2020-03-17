@@ -18,7 +18,7 @@ def messages_api():
         print(ex)
         return auth_denied()
 
-    ResponseHandler(config).handle(request.get_json())
+    ResponseHandler(config).handle_json(request.get_json())
     return jsonify({'success': True})
 
 
