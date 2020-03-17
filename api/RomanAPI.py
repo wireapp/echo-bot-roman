@@ -23,5 +23,10 @@ def messages_api():
     return jsonify({'success': True})
 
 
+@roman_api.route('/status', methods=['GET'])
+def status():
+    return jsonify({'status': 'OK'})
+
+
 def auth_denied() -> Response:
     return Response('Access denied, wrong or missing token.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
