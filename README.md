@@ -1,4 +1,5 @@
 # Echo Bot powered by [Roman](https://github.com/dkovacevic/roman)
+[![GitHub version](https://badge.fury.io/gh/wireapp%2Fecho-bot-roman.svg)](https://badge.fury.io/gh/wireapp%2Fecho-bot-roman)
 ![CI/CD](https://github.com/wireapp/echo-bot-roman/workflows/CI/CD/badge.svg)
 ![Release Pipeline](https://github.com/wireapp/echo-bot-roman/workflows/Release%20Pipeline/badge.svg)
 
