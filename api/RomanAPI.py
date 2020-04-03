@@ -25,8 +25,7 @@ class Messages(Resource):
             bearer_token = request.headers['Authorization'].split("Bearer ", 1)[1]
             if bearer_token != config.roman_token:
                 return auth_denied()
-        except Exception as ex:
-            print(ex)
+        except Exception:
             return auth_denied()
 
         ResponseHandler(config).handle_json(request.get_json())
@@ -34,4 +33,4 @@ class Messages(Resource):
 
 
 def auth_denied() -> Response:
-    return Response('Access denied, wrong or missing token.', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
+    return Response('Access denied, wrong or missing token.', 401)
