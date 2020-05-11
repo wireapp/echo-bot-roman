@@ -1,5 +1,9 @@
+import logging
+
 from api.Configuration import Config
 from client.RomanClient import RomanClient
+
+logger = logging.getLogger(__name__)
 
 
 class ResponseHandler:
@@ -15,6 +19,7 @@ class ResponseHandler:
         Handle message received from the Roman
         """
         message_type = json['type']
+        logger.debug(f'Handling message type: {message_type}')
         try:
             {
                 'conversation.bot_request': lambda x: print('Handling bot request.'),
@@ -23,20 +28,19 @@ class ResponseHandler:
             }[message_type](json)
         except KeyError:
             # type is different
-            print(f'Unhandled type: {json["type"]}')
+            logger.warning(f'Unhandled type: {json["type"]}')
         except Exception as ex:
-            print(ex)
+            logger.exception(ex)
 
     def __init(self, json: dict):
-        print('init received')
-
+        logger.debug('init received')
         self.__send_text("Hello! I'm Echo Bot!", [], json['token'])  # TODO get message info
 
     def __new_message(self, json: dict):
-        print('New text message received.')
+        logger.debug('New text message received.')
 
         if not json.get('text'):
-            print(f'Unsupported payload.')
+            logger.warning(f'Unsupported payload.')
             return
 
         text = json['text']
