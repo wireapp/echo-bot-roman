@@ -8,7 +8,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 from api.RomanAPI import roman_api
 from api.StatusApi import status_api
-from api.VersionApi import version_api
+from api.VersionApi import version_api, get_version
+from services.Metrics import init_metrics
 
 # Setup logging
 logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] - %(levelname)s - %(module)s: %(message)s',
@@ -43,10 +44,13 @@ api.add_namespace(version_api, path='/')
 api.add_namespace(status_api, path='/')
 
 logger.debug("Loading configs.")
-
 config_file = 'config'
 if importing.find_spec(config_file):
     app.config.from_object(config_file)
+
+logger.debug("Initialize metrics")
+with app.app_context():
+    init_metrics(app, get_version())
 
 logger.info("Starting up.")
 

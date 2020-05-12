@@ -10,6 +10,7 @@ flask = "*"
 flask-restx = "*"
 requests = "*"
 gunicorn = "*"
+prometheus-flask-exporter = "*"
 
 [requires]
 python_version = "3.7"
