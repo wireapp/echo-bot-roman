@@ -11,6 +11,7 @@ flask-restx = "*"
 requests = "*"
 gunicorn = "*"
 prometheus-flask-exporter = "*"
+json-logging = "*"
 
 [requires]
 python_version = "3.7"
