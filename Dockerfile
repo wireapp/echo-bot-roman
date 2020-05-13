@@ -26,4 +26,4 @@ RUN echo $release_version > $RELEASE_FILE_PATH
 
 # start app
 EXPOSE 8080
-CMD gunicorn --bind 0.0.0.0:8080 app:app
+CMD gunicorn --bind 0.0.0.0:8080 --log-level WARNING app:app

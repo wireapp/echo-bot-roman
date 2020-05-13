@@ -63,6 +63,8 @@ def configure_json_logging(app):
 
     # configure root logger
     json_logging.config_root_logger()
+    # disable printing of flask requests
+    logging.getLogger('flask-request-logger').setLevel(logging.WARNING)
 
 
 # Create app
