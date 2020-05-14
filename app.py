@@ -1,3 +1,5 @@
+import logging
+import os
 from importlib import util as importing
 
 from flask import Flask
@@ -5,12 +7,14 @@ from flask_restx import Api
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from api.RomanAPI import roman_api
-from api.StatusApi import status_api
-from api.VersionApi import version_api, get_version
-from services.Logging import setup_logging
-from services.Metrics import init_metrics
+from wire_flask.Logging import setup_logging
+from wire_flask.Metrics import init_metrics
+from wire_flask.StatusApi import status_api
+from wire_flask.VersionApi import version_api, get_version
 
-logger = setup_logging(__name__)
+logger = setup_logging(__name__,
+                       level=logging.DEBUG,
+                       json_logging=os.getenv('JSON_LOGGING', 'false').lower() == 'true')
 
 
 def load_configuration(app):
@@ -40,7 +44,7 @@ def configure_apis(app):
 
 def configure_metrics(app):
     logger.debug("Initialize metrics")
-    init_metrics(app, get_version())
+    init_metrics(app, get_version(), 'echo-roman')
 
 
 # Create app

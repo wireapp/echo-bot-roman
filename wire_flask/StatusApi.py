@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restx import Namespace, Resource, fields
 
-from services.Metrics import metrics
+from wire_flask.Metrics import metrics
 
 status_api = Namespace('service')
 

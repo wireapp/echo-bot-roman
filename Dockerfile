@@ -24,6 +24,8 @@ ARG release_version=development
 ENV RELEASE_FILE_PATH=/app/release.txt
 RUN echo $release_version > $RELEASE_FILE_PATH
 
+ENV JSON_LOGGING='true'
+
 # start app
 EXPOSE 8080
 # --log-level WARNING is just for first 3 gunicorn lines as it can not log in jsons
