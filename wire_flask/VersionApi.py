@@ -9,11 +9,16 @@ logger = logging.getLogger(__name__)
 version_api = Namespace('service')
 
 
-@version_api.route('version', methods=['GET'])
+@version_api.route('version', methods=['GET', 'POST'])
 class Version(Resource):
     version_model = version_api.model('Version', {
         'version': fields.String(required=True, description='Version of running code.')
     })
+
+    def post(self):
+        # TODO REMOVE THIS
+        logger.warning('Throwing exception on purpose')
+        raise Exception('Oh no')
 
     @version_api.response(code=200, model=version_model, description="Returns version of the code")
     def get(self):
