@@ -1,8 +1,5 @@
-import logging
-import sys
 from importlib import util as importing
 
-import json_logging
 from flask import Flask
 from flask_restx import Api
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -10,19 +7,10 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from api.RomanAPI import roman_api
 from api.StatusApi import status_api
 from api.VersionApi import version_api, get_version
+from services.Logging import setup_logging
 from services.Metrics import init_metrics
 
-# setup log level and set stdout
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
-
-# enable JSON logging for non http context (this init)
-json_logging.ENABLE_JSON_LOGGING = True
-json_logging.init_non_web()
-
-# create logger
-logger = logging.getLogger(__name__)
-# make logger print jsons
-json_logging.config_root_logger()
+logger = setup_logging(__name__)
 
 
 def load_configuration(app):
@@ -55,18 +43,6 @@ def configure_metrics(app):
     init_metrics(app, get_version())
 
 
-def configure_json_logging(app):
-    # enable JSON logging for the Flask
-    json_logging.ENABLE_JSON_LOGGING = True
-    json_logging.init_flask(enable_json=True)
-    json_logging.init_request_instrument(app)
-
-    # configure root logger
-    json_logging.config_root_logger()
-    # disable printing of flask requests
-    logging.getLogger('flask-request-logger').setLevel(logging.WARNING)
-
-
 # Create app
 app = Flask(__name__)
 # fix for https swagger - see https://github.com/python-restx/flask-restx/issues/58
@@ -79,8 +55,6 @@ with app.app_context():
     configure_apis(app)
     # configure prometheus metrics
     configure_metrics(app)
-    # lastly initialize logging to jsons
-    configure_json_logging(app)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=8080)
