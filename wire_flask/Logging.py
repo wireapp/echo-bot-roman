@@ -54,7 +54,7 @@ class JsonFormatter(logging.Formatter):
     @staticmethod
     def __prepare_log_data():
         data = {
-            'timestamp': datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            '@timestamp': datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         }
         # try to insert call id - needs flask context
         try:
