@@ -15,11 +15,6 @@ class Version(Resource):
         'version': fields.String(required=True, description='Version of running code.')
     })
 
-    def post(self):
-        # TODO REMOVE THIS
-        logger.warning('Throwing exception on purpose')
-        raise Exception('Oh no')
-
     @version_api.response(code=200, model=version_model, description="Returns version of the code")
     def get(self):
         version = get_version()
