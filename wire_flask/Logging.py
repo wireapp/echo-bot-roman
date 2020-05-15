@@ -2,7 +2,7 @@ import json
 import logging
 import sys
 import traceback
-from datetime import datetime
+from datetime import datetime, timezone
 from logging import Logger
 
 from wire_flask.RequestId import request_id
@@ -54,11 +54,11 @@ class JsonFormatter(logging.Formatter):
         super(JsonFormatter, self).__init__()
 
     @staticmethod
-    def __prepare_log_data():
+    def __prepare_log_data(record):
         data = {
             # we can't use isoformat as it is not really ISO, because it is missing Z
             # thus this strftime is real ISO
-            '@timestamp': datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+            '@timestamp': datetime.fromtimestamp(record.created, timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         }
         # try to insert call id - needs flask context
         try:
@@ -91,7 +91,7 @@ class JsonFormatter(logging.Formatter):
             }
 
     def format(self, record):
-        data = self.__prepare_log_data()
+        data = self.__prepare_log_data(record)
         self.__copy_valid_data(record, data)
         self.__insert_exception(record, data)
         return json.dumps(data)
