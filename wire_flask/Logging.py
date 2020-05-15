@@ -49,6 +49,8 @@ class JsonFormatter(logging.Formatter):
                         'thread'}
         # rename values to the Wire common names
         self.renaming = {'levelname': 'level', 'msg': 'message', 'name': 'logger', 'threadName': 'thread_name'}
+        # transform some values for common usage
+        self.transformations = {'level': lambda x: 'WARN' if x == 'WARNING' else x}
         super(JsonFormatter, self).__init__()
 
     @staticmethod
@@ -66,14 +68,17 @@ class JsonFormatter(logging.Formatter):
             pass
         return data
 
+    def __transform_value(self, k_renamed, v):
+        return self.transformations[k_renamed](v) if k_renamed in self.transformations else v
+
     def __copy_valid_data(self, record, data):
         # copy only necessary data
         for k, v in vars(record).items():
-            if k in self.ignored:
+            if k in self.ignored or not v:
                 continue
             k_renamed = self.renaming.get(k)
             k = k_renamed if k_renamed else k
-            data[k] = v
+            data[k] = self.__transform_value(k, v)
 
     @staticmethod
     def __insert_exception(record, data):
