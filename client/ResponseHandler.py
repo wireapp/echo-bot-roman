@@ -33,7 +33,7 @@ class ResponseHandler:
             }[message_type](json)
         except KeyError:
             # type is different
-            logger.warning(f'Unhandled type: {json["type"]}')
+            logger.warning(f'Unhandled type: {message_type}')
         except Exception as ex:
             logger.exception(ex)
 
