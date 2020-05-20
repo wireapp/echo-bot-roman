@@ -19,7 +19,7 @@ def setup_logging(name: str, level=logging.DEBUG, json_logging=True) -> Logger:
 
     # disable useless logging from flask
     logging.getLogger('werkzeug').setLevel(logging.WARNING)
-
+    logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
     return logging.getLogger(name)
 
 
