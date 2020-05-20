@@ -18,11 +18,14 @@ class ResponseHandler:
         """
         Handle message received from the Roman
         """
+        # TODO remove this in the future
+        logger.debug(f'Received data')
+        logger.debug(json)
         message_type = json['type']
         logger.debug(f'Handling message type: {message_type}')
         try:
             {
-                'conversation.bot_request': lambda x: print('Handling bot request.'),
+                'conversation.bot_request': lambda x: logger.info('Handling bot request.'),
                 'conversation.init': self.__init,
                 'conversation.new_text': self.__new_message
             }[message_type](json)
