@@ -20,14 +20,16 @@ class ResponseHandler:
         """
         # TODO remove this in the future
         logger.debug(f'Received data')
-        logger.debug(json)
-        message_type = json['type']
+        logger.debug(f'{json}')
+
+        message_type = json.get('type')
         logger.debug(f'Handling message type: {message_type}')
         try:
             {
                 'conversation.bot_request': lambda x: logger.info('Handling bot request.'),
                 'conversation.init': self.__init,
-                'conversation.new_text': self.__new_message
+                'conversation.new_text': self.__new_message,
+                None: lambda x: logger.error(f'No type received for json: {x}')
             }[message_type](json)
         except KeyError:
             # type is different

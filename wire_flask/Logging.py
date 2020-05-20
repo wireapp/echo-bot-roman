@@ -63,8 +63,10 @@ class JsonFormatter(logging.Formatter):
         # try to insert call id - needs flask context
         try:
             request = request_id()
-            data['infra_request'] = request.nginx_related
-            data['app_request'] = request.app_related
+            if request.nginx_related:
+                data['infra_request'] = request.nginx_related
+            if request.app_related:
+                data['app_request'] = request.app_related
         # ignore exception when this log is outside of the context
         except Exception:
             pass
