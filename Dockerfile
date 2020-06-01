@@ -3,8 +3,9 @@ FROM python:3.7-alpine AS install
 # install pipenv
 RUN pip install pipenv
 
+WORKDIR /app
 # copy dependencies
-COPY Pipfile* /
+COPY Pipfile* ./
 
 # install dependencies
 RUN pipenv lock -r > requirements.txt
