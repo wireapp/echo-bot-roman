@@ -26,6 +26,7 @@ class Messages(Resource):
         config = get_configuration()
         logger.debug(f"Used configuration {config}")
         try:
+            logger.debug(f'Headers: {request.headers}')
             logger.debug("Reading token.")
             bearer_token = request.headers['Authorization'].split("Bearer ", 1)[1]
             logger.debug(f"Token found: {bearer_token}")

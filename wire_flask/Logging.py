@@ -90,7 +90,7 @@ class JsonFormatter(logging.Formatter):
             return
         # copy exception if there's one
         exception = {
-            'stacktrace': traceback.format_exception(record.exc_info[0], record.exc_info[1], record.exc_info[2])
+            'stacktrace': f'{traceback.format_exception(record.exc_info[0], record.exc_info[1], record.exc_info[2])}'
         }
         # sometimes json dumps fails for some reason...
         # in order to keep logging alive, we must do this weird catch
