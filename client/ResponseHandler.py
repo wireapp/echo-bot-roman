@@ -30,7 +30,7 @@ class ResponseHandler:
                 'conversation.init': self.__init,
                 'conversation.new_text': self.__new_message,
                 None: lambda x: logger.error(f'No type received for json: {x}')
-            }[message_type](json)
+            }.get(message_type, lambda x: logger.error(f'Unhandled type: {message_type}'))(json)
         except KeyError:
             # type is different
             logger.warning(f'Unhandled type: {message_type}')
@@ -48,8 +48,8 @@ class ResponseHandler:
             logger.warning(f'Unsupported payload.')
             return
 
-        text = json['text']
-        mentions = json['mentions']
+        text = json.get('text')
+        mentions = json.get('mentions', [])
 
         new_text = self.__prefix + text
         for mention in mentions:
