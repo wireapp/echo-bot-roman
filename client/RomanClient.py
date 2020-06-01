@@ -14,10 +14,14 @@ class RomanClient:
 
     def send_message(self, token: str, payload: dict) -> str:
         logger.debug(f'Sending {payload} to {self.url}/conversation.')
-        r = requests.post(f"{self.url}/conversation", data=json.dumps(payload),
-                          headers={"content-type": "application/json", "Authorization": f"Bearer {token}"})
-        logger.debug(f'Status code: {r.status_code}')
-        j = r.json()
-        logger.debug(f'Response: {j}')
-        logger.debug(f'Headers: {r.headers}')
-        return j
+        try:
+            r = requests.post(f"{self.url}/conversation", data=json.dumps(payload),
+                              headers={"content-type": "application/json", "Authorization": f"Bearer {token}"})
+            logger.debug(f'Status code: {r.status_code}')
+            j = r.json()
+            logger.debug(f'Response: {j}')
+            logger.debug(f'Headers: {r.headers}')
+            return j
+        except Exception as ex:
+            logger.error(f'Exception {ex} during sending data to roman. {payload}, url: {self.url}')
+            logger.exception(ex)

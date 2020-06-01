@@ -86,14 +86,33 @@ class JsonFormatter(logging.Formatter):
 
     @staticmethod
     def __insert_exception(record, data):
+        if not record.exc_info:
+            return
         # copy exception if there's one
-        if record.exc_info:
-            data['exception'] = {
-                'stacktrace': traceback.format_exception(record.exc_info[0], record.exc_info[1], record.exc_info[2])
-            }
+        exception = {
+            'stacktrace': traceback.format_exception(record.exc_info[0], record.exc_info[1], record.exc_info[2])
+        }
+        # sometimes json dumps fails for some reason...
+        # in order to keep logging alive, we must do this weird catch
+        try:
+            json.dumps(exception)
+            data['exception'] = exception
+        except Exception as ex:
+            logger = logging.getLogger('JsonLogFormatter')
+            logger.error(f'There was an error during exception logging. {ex}')
+            logger.error(f'Original exception {exception}')
+            logger.error(f'Original record: {record}')
 
     def format(self, record):
         data = self.__prepare_log_data(record)
         self.__copy_valid_data(record, data)
         self.__insert_exception(record, data)
-        return json.dumps(data)
+        try:
+            j = json.dumps(data)
+            return j
+        except Exception as ex:
+            logger = logging.getLogger('JsonLogFormatter')
+            logger.error(f'There was an error during exception logging. {ex}')
+            logger.error(f'Original data: {data}')
+            logger.error(f'Original record: {record}')
+            return json.dumps({'level': 'ERROR', 'message': 'Error during json dumps.'})

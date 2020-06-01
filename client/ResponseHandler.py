@@ -35,6 +35,7 @@ class ResponseHandler:
             # type is different
             logger.warning(f'Unhandled type: {message_type}')
         except Exception as ex:
+            logger.error(f'Exception {ex} during handling {json}')
             logger.exception(ex)
 
     def __init(self, json: dict):
